@@ -1,0 +1,25 @@
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+UserSettings/
+MemoryCaptures/
+sysinfo.txt
+
+# Paket önbelleği
+src/Library/PackageCache/
+
+# Rider veya VS Code gibi editörler
+.idea/
+.vscode/
+*.csproj
+*.sln
+*.user
+*.unityproj
+
+# OS dosyaları
+.DS_Store
+Thumbs.db
+
