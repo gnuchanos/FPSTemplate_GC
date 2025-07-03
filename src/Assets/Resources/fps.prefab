@@ -80,6 +80,7 @@ MonoBehaviour:
   walkSpeed: 4
   sprintSpeed: 7
   crouchSpeed: 2
+  BodyDuck: 0
   crouchHeight: 1
   standHeight: 2
   playerCanJump: 1
@@ -88,6 +89,38 @@ MonoBehaviour:
   faceRayHit: 0
   rayColor: {r: 0, g: 1, b: 0, a: 1}
   rayColor_face: {r: 0, g: 1, b: 0, a: 1}
+  holdPoint: {fileID: 6181689501388696939}
+--- !u!1 &4114588612507824419
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6181689501388696939}
+  m_Layer: 0
+  m_Name: hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6181689501388696939
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4114588612507824419}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.82, y: -1.15, z: 1.69}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8667409360632555489}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5580147813610218571
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,6 +151,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3333934229805588610}
+  - {fileID: 6181689501388696939}
   m_Father: {fileID: 4056578746307099585}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8613227198505401478

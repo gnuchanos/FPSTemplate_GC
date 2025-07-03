@@ -12,8 +12,6 @@ public class PlayerMovement : MonoBehaviour {
     public float gravity = -15f;
     public float mouseSensitivity = 200f;
 
-
-
     // Player Speed
     public float CurrentSpeed = 4f;
     public float walkSpeed = 4f;
@@ -66,6 +64,10 @@ public class PlayerMovement : MonoBehaviour {
         head.localEulerAngles = new Vector3(xRotation, 0f, 0f);
     }
 
+    public Transform holdPoint;
+    private Rigidbody heldObject = null;
+    private bool objectIsHold = false;
+
     void UpdateFaceRay() {
         Vector3 faceOrigin = head.position;
         Vector3 faceDirection = head.forward;
@@ -73,15 +75,47 @@ public class PlayerMovement : MonoBehaviour {
         faceRay = new Ray(faceOrigin, faceDirection);
         faceRayHit = Physics.Raycast(faceRay, out RaycastHit hit, FaceRayDistance);
 
-
         if (faceRayHit) {
             rayColor_face = Color.red;
-        } else {
+
+            if (Input.GetKeyDown(KeyCode.E) && !objectIsHold) {
+                if (heldObject == null && hit.collider.gameObject.layer == LayerMask.NameToLayer("box")) {
+                    Rigidbody rb = hit.collider.attachedRigidbody;
+                    if (rb != null) {
+                        objectIsHold = true;
+                        heldObject = rb;
+                        heldObject.useGravity = false;
+                        heldObject.isKinematic = true;
+                        heldObject.drag = 10f;
+                        heldObject.constraints = RigidbodyConstraints.FreezeRotation;
+                        heldObject.transform.SetParent(holdPoint);
+                        heldObject.transform.position = holdPoint.position;
+                    }
+                }
+            }
+        }  else {
             rayColor_face = Color.green;
+
+            if (Input.GetKeyDown(KeyCode.E) && objectIsHold) {
+                if (heldObject != null) {
+                    objectIsHold = false;
+                    heldObject.useGravity = true;
+                    heldObject.drag = 0f;
+                    heldObject.isKinematic = false;
+                    heldObject.constraints = RigidbodyConstraints.None;
+                    heldObject.transform.SetParent(null);
+                    heldObject = null;
+                }
+            }
         }
 
         Debug.DrawRay(faceOrigin, faceDirection * FaceRayDistance, rayColor_face);
+
+        if (heldObject != null && objectIsHold) {
+            heldObject.position = Vector3.Lerp(heldObject.position, holdPoint.position, 10f * Time.deltaTime);
+        }
     }
+
 
     void UpdateHeadRay() {
         Vector3 rayDirection = Vector3.up;
@@ -99,6 +133,7 @@ public class PlayerMovement : MonoBehaviour {
         Debug.DrawRay(headOrigin, rayDirection * HeadRayDistance, rayColor);
     }
 
+
     void Walk() {
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
@@ -114,6 +149,7 @@ public class PlayerMovement : MonoBehaviour {
             HeadHeight = HeadHeight_min;
             CurrentSpeed = crouchSpeed;
             BodyDuck = true;
+
         } else {
             if (!headRayHit) {
                 BodyHeight = standHeight;
@@ -141,9 +177,11 @@ public class PlayerMovement : MonoBehaviour {
         if (controller.isGrounded && velocity.y < 0) {
             velocity.y = -2f;
         }
+
         if (controller.isGrounded && Input.GetButtonDown("Jump")){
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
+
         velocity.y += gravity * Time.deltaTime;
     }
 
