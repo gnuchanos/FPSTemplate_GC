@@ -1,0 +1,200 @@
+[gd_scene load_steps=7 format=3 uid="uid://c5gmvarioms50"]
+
+[ext_resource type="Script" path="res://BaseData/FPS/fps.gd" id="1_ocb5r"]
+[ext_resource type="Script" path="res://BaseData/FPS/settings.gd" id="2_wftsh"]
+[ext_resource type="FontFile" uid="uid://bqmglpkfyr1mm" path="res://BaseData/Font/FreeSans.ttf" id="3_iw2cc"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8hgvu"]
+radius = 0.4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wftsh"]
+bg_color = Color(0.0177324, 0.0177324, 0.0177324, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iw2cc"]
+bg_color = Color(0.197937, 0.197937, 0.197937, 1)
+
+[node name="FPS" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00874, 0)
+script = ExtResource("1_ocb5r")
+
+[node name="body" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_8hgvu")
+
+[node name="head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Camera3D" type="Camera3D" parent="head"]
+
+[node name="FaceRay" type="RayCast3D" parent="head"]
+target_position = Vector3(0, 0, -2.25)
+collision_mask = 2
+
+[node name="GunRay" type="RayCast3D" parent="head"]
+target_position = Vector3(0, 0, -20)
+collision_mask = 4
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="settings" type="Window" parent="CanvasLayer/UI"]
+position = Vector2i(60, 36)
+size = Vector2i(830, 785)
+visible = false
+script = ExtResource("2_wftsh")
+
+[node name="BLACKHOLE" type="ScrollContainer" parent="CanvasLayer/UI/settings"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/settings/BLACKHOLE"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="sep" type="Label" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_wftsh")
+
+[node name="windowMode" type="HBoxContainer" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+
+[node name="WindowMode" type="Button" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer/windowMode"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_iw2cc")
+theme_override_font_sizes/font_size = 45
+text = "Full Screen Mode"
+
+[node name="sep2" type="Label" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_wftsh")
+
+[node name="mouseSpeedtext" type="Label" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_iw2cc")
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("StyleBoxFlat_iw2cc")
+text = "Mouse Speed"
+horizontal_alignment = 1
+
+[node name="mouseSpeed" type="HBoxContainer" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+
+[node name="mousespeedSlider" type="HSlider" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer/mouseSpeed"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.1
+max_value = 1.0
+step = 0.1
+value = 0.5
+
+[node name="sep3" type="Label" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_wftsh")
+
+[node name="MusicVolumeText" type="Label" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_iw2cc")
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("StyleBoxFlat_iw2cc")
+text = "Music Volume"
+horizontal_alignment = 1
+
+[node name="MusicVolume" type="HBoxContainer" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+
+[node name="MusicVolumeSlider" type="HSlider" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer/MusicVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -30.0
+max_value = 0.0
+
+[node name="sep4" type="Label" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_wftsh")
+
+[node name="EffectVolumeText" type="Label" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_iw2cc")
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("StyleBoxFlat_iw2cc")
+text = "Effect Volume"
+horizontal_alignment = 1
+
+[node name="EffectVolume" type="HBoxContainer" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+
+[node name="EffectVolumeSlider" type="HSlider" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer/EffectVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -30.0
+max_value = 0.0
+
+[node name="sep5" type="Label" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_wftsh")
+
+[node name="EffectVolumeText2" type="Label" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_iw2cc")
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("StyleBoxFlat_iw2cc")
+text = "Atmosphere Volume"
+horizontal_alignment = 1
+
+[node name="AtmosphereVolume" type="HBoxContainer" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+
+[node name="AtmosphereVolumeSlider" type="HSlider" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer/AtmosphereVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -30.0
+max_value = 0.0
+
+[node name="sep6" type="Label" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_wftsh")
+
+[node name="VoiceVolumeText" type="Label" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_iw2cc")
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("StyleBoxFlat_iw2cc")
+text = "Voice Volume"
+horizontal_alignment = 1
+
+[node name="VoiceVolume" type="HBoxContainer" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+
+[node name="VoiceVolumeSlider" type="HSlider" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer/VoiceVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -30.0
+max_value = 0.0
+
+[node name="sep7" type="Label" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_wftsh")
+
+[node name="HeadRay" type="RayCast3D" parent="."]
+target_position = Vector3(0, 2, 0)
+
+[connection signal="close_requested" from="CanvasLayer/UI/settings" to="CanvasLayer/UI/settings" method="_on_close_requested"]
+[connection signal="pressed" from="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer/windowMode/WindowMode" to="CanvasLayer/UI/settings" method="_on_window_mode_pressed"]
+[connection signal="value_changed" from="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer/mouseSpeed/mousespeedSlider" to="CanvasLayer/UI/settings" method="_on_mousespeed_slider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer/MusicVolume/MusicVolumeSlider" to="CanvasLayer/UI/settings" method="_on_music_volume_slider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer/EffectVolume/EffectVolumeSlider" to="CanvasLayer/UI/settings" method="_on_effect_volume_slider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer/AtmosphereVolume/AtmosphereVolumeSlider" to="CanvasLayer/UI/settings" method="_on_atmosphere_volume_slider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer/VoiceVolume/VoiceVolumeSlider" to="CanvasLayer/UI/settings" method="_on_voice_volume_slider_value_changed"]

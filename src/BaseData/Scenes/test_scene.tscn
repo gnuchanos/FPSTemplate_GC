@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://cw7mwt1wdh7g4"]
+
+[ext_resource type="PackedScene" uid="uid://cympoq8ylpw2n" path="res://BaseData/3D/testScenesAndModels/mainScene.glb" id="1_sv1pn"]
+[ext_resource type="Texture2D" uid="uid://ng7vhx82645o" path="res://BaseData/skybox/skybox.png" id="2_6exqo"]
+[ext_resource type="PackedScene" uid="uid://c5gmvarioms50" path="res://BaseData/FPS/FPS.tscn" id="2_mijgt"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_od2bl"]
+panorama = ExtResource("2_6exqo")
+
+[sub_resource type="Sky" id="Sky_t4ia7"]
+sky_material = SubResource("PanoramaSkyMaterial_od2bl")
+
+[sub_resource type="Environment" id="Environment_sv1pn"]
+background_mode = 2
+background_energy_multiplier = 0.2
+sky = SubResource("Sky_t4ia7")
+ambient_light_source = 3
+tonemap_mode = 3
+ssil_enabled = true
+glow_enabled = true
+glow_bloom = 0.5
+
+[node name="TestScene" type="Node3D"]
+
+[node name="mainScene" parent="." instance=ExtResource("1_sv1pn")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_sv1pn")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.56709, 12.2672, 0)
+light_energy = 5.641
+omni_range = 4096.0
+
+[node name="FPS" parent="." instance=ExtResource("2_mijgt")]
