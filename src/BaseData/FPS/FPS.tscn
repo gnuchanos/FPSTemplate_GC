@@ -17,6 +17,9 @@ bg_color = Color(0.197937, 0.197937, 0.197937, 1)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00874, 0)
 script = ExtResource("1_ocb5r")
 
+[node name="HeadRay" type="RayCast3D" parent="."]
+target_position = Vector3(0, 2, 0)
+
 [node name="body" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_8hgvu")
 
@@ -24,6 +27,7 @@ shape = SubResource("CapsuleShape3D_8hgvu")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="Camera3D" type="Camera3D" parent="head"]
+fov = 90.0
 
 [node name="FaceRay" type="RayCast3D" parent="head"]
 target_position = Vector3(0, 0, -2.25)
@@ -188,8 +192,27 @@ max_value = 0.0
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_wftsh")
 
-[node name="HeadRay" type="RayCast3D" parent="."]
-target_position = Vector3(0, 2, 0)
+[node name="fovText" type="Label" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_iw2cc")
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("StyleBoxFlat_iw2cc")
+text = "FOV"
+horizontal_alignment = 1
+
+[node name="fov" type="HBoxContainer" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+
+[node name="fovSlider" type="HSlider" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer/fov"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 30.0
+max_value = 120.0
+value = 90.0
+
+[node name="sep8" type="Label" parent="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_wftsh")
 
 [connection signal="close_requested" from="CanvasLayer/UI/settings" to="CanvasLayer/UI/settings" method="_on_close_requested"]
 [connection signal="pressed" from="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer/windowMode/WindowMode" to="CanvasLayer/UI/settings" method="_on_window_mode_pressed"]
@@ -198,3 +221,4 @@ target_position = Vector3(0, 2, 0)
 [connection signal="value_changed" from="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer/EffectVolume/EffectVolumeSlider" to="CanvasLayer/UI/settings" method="_on_effect_volume_slider_value_changed"]
 [connection signal="value_changed" from="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer/AtmosphereVolume/AtmosphereVolumeSlider" to="CanvasLayer/UI/settings" method="_on_atmosphere_volume_slider_value_changed"]
 [connection signal="value_changed" from="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer/VoiceVolume/VoiceVolumeSlider" to="CanvasLayer/UI/settings" method="_on_voice_volume_slider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/UI/settings/BLACKHOLE/VBoxContainer/fov/fovSlider" to="CanvasLayer/UI/settings" method="_on_fov_slider_value_changed"]

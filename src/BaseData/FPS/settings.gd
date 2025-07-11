@@ -30,3 +30,7 @@ func _on_atmosphere_volume_slider_value_changed(value: float) -> void:
 
 func _on_voice_volume_slider_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Voice"), value)
+
+func _on_fov_slider_value_changed(value: float) -> void:
+	GlobalVAR.PlayerFOV_Current = value
+	GlobalVAR.PlayerFOV_MIN = value

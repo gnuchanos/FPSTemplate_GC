@@ -6,6 +6,10 @@ var PlayerLookingConsole = false
 var PlayerCanJump = true
 var PlayerCanRun  = true
 
+var PlayerRunning = false
+
+var PlayerFOV_Current = 90
+var PlayerFOV_MIN = 90
 
 var PlayerCurrentSpeed = 5
 var PlayerMinSpeed = 5
