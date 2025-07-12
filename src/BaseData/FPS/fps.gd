@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-const JUMP_VELOCITY = 6.5
+
 
 @onready var head = $head
 @onready var Camera = $head/Camera3D
@@ -15,7 +15,7 @@ var Dukking: bool  = false
 var Crawling: bool = false
 const  CrawlingOrDuckingSpeed: int = 5
 
-@onready var SettingsWindow = $CanvasLayer/UI/settings
+@onready var SettingsWindow = $UI/settings
 @onready var HeadRay = $HeadRay
 
 func _ready():
@@ -38,29 +38,35 @@ func _process(_delta: float) -> void:
 			GlobalVAR.PlayerLookingSettings = true
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 			SettingsWindow.show()
-		Camera.fov = GlobalVAR.PlayerFOV_Current
+
+	# i hope this is can't be performance problem
+	Camera.fov = GlobalVAR.PlayerFOV_Current
+
+	$shader0.visible = GlobalVAR.shader0
+	$shader1.visible = GlobalVAR.shader1
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
 	if GlobalVAR.PlayerCanMove and not GlobalVAR.PlayerLookingConsole and not GlobalVAR.PlayerLookingSettings:
-		if Input.is_action_just_pressed("space") and is_on_floor():
-			velocity.y = JUMP_VELOCITY
-
-		if Input.is_action_pressed("duck"):
+		# duck duck mother ducker
+		if Input.is_action_pressed("duck") and not HeadRay.is_colliding():
 			body.shape.height -= CrawlingOrDuckingSpeed * delta
 			head.position.y = 0.7
 			Crawling = false
 			Dukking  = true
 			body.shape.height = clamp(body.shape.height, bodyDuck, bodyMaxHeight)
+			GlobalVAR.PlayerCurrentSpeed = 3
 
+		# it's crawl but i give name crowley for fun
 		elif Input.is_action_pressed("crowley"):
 			body.shape.height -= CrawlingOrDuckingSpeed * delta
 			head.position.y = 0.3
 			Crawling = true
 			Dukking  = false
 			body.shape.height = clamp(body.shape.height, bodyCrawley, bodyMaxHeight)
+			GlobalVAR.PlayerCurrentSpeed = 1
 
 		else:
 			if not HeadRay.is_colliding():
@@ -74,23 +80,28 @@ func _physics_process(delta: float) -> void:
 				if not Input.is_action_just_pressed("rightM"):
 					if Input.is_action_pressed("run"):
 						GlobalVAR.PlayerCurrentSpeed += 80 * delta
-						GlobalVAR.PlayerFOV_Current  += 80 * delta
+						GlobalVAR.PlayerJump_Height_Current += 100 * delta
+						if Input.is_action_pressed('w'):
+							GlobalVAR.PlayerFOV_Current  += 80 * delta
 					else:
 						GlobalVAR.PlayerCurrentSpeed -= 100 * delta
 						GlobalVAR.PlayerFOV_Current  -= 100 * delta
+						GlobalVAR.PlayerJump_Height_Current -= 100 * delta
 
-		# base running speed min and max
-		GlobalVAR.PlayerCurrentSpeed = clamp(GlobalVAR.PlayerCurrentSpeed, GlobalVAR.PlayerMinSpeed, GlobalVAR.PlayerMaxSpeed)
+					GlobalVAR.PlayerJump_Height_Current = clamp(GlobalVAR.PlayerJump_Height_Current, GlobalVAR.PlayerJump_Height_Min, GlobalVAR.PlayerJump_Height_Max)
+
+				# base running speed min and max
+				GlobalVAR.PlayerCurrentSpeed = clamp(GlobalVAR.PlayerCurrentSpeed, GlobalVAR.PlayerMinSpeed, GlobalVAR.PlayerMaxSpeed)
+
+		if Input.is_action_just_pressed("space") and is_on_floor():
+			velocity.y = GlobalVAR.PlayerJump_Height_Current
 
 		# Right click for zoom
 		if Input.is_action_pressed("rightM") and not Input.is_action_pressed("run"):
 			GlobalVAR.PlayerFOV_Current  -= 80 * delta
 			GlobalVAR.PlayerFOV_Current  = clamp(GlobalVAR.PlayerFOV_Current, GlobalVAR.PlayerFOV_MIN-10, GlobalVAR.PlayerFOV_MIN)
 		else:
-			GlobalVAR.PlayerFOV_Current  = clamp(GlobalVAR.PlayerFOV_Current, GlobalVAR.PlayerFOV_MIN, GlobalVAR.PlayerFOV_MIN+10)
-
-		# i hope this is can't be performance problem
-		Camera.fov = GlobalVAR.PlayerFOV_Current
+			GlobalVAR.PlayerFOV_Current  = clamp(GlobalVAR.PlayerFOV_Current, GlobalVAR.PlayerFOV_MIN, GlobalVAR.PlayerFOV_MIN+20)
 
 		# I do this because if the collision height becomes small, the radius also becomes small.
 		body.shape.radius = clamp(body.shape.height, 0.4, 0.4)

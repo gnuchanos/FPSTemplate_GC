@@ -12,7 +12,7 @@ sky_material = SubResource("PanoramaSkyMaterial_od2bl")
 
 [sub_resource type="Environment" id="Environment_sv1pn"]
 background_mode = 2
-background_energy_multiplier = 0.2
+background_energy_multiplier = 0.3
 sky = SubResource("Sky_t4ia7")
 ambient_light_source = 3
 tonemap_mode = 3
@@ -29,7 +29,7 @@ environment = SubResource("Environment_sv1pn")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.56709, 12.2672, 0)
-light_energy = 5.641
 omni_range = 4096.0
 
 [node name="FPS" parent="." instance=ExtResource("2_mijgt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.11898, 1.00874, 1.38249)

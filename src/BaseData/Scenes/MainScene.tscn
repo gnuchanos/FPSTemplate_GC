@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cglsul203lfyi"]
+[gd_scene load_steps=31 format=3 uid="uid://cglsul203lfyi"]
 
 [ext_resource type="Script" path="res://BaseData/Scripts/MainMenu.gd" id="1_32ccm"]
 [ext_resource type="PackedScene" uid="uid://dlbm17bymbnjn" path="res://BaseData/3D/Cardis/Cardis.glb" id="2_h1k7f"]
@@ -14,7 +14,11 @@
 [ext_resource type="PackedScene" uid="uid://13hyuesmqvad" path="res://BaseData/3D/CardisExtra/startEngineObject.glb" id="12_bgyq2"]
 [ext_resource type="Texture2D" uid="uid://cvdw2hx57sanh" path="res://BaseData/skybox/minedump_flats_1k.exr" id="13_74i1y"]
 [ext_resource type="AudioStream" uid="uid://brwqo4ms71k0i" path="res://BaseData/Sound/InSoundW13.ogg" id="14_h1k7f"]
+[ext_resource type="Shader" path="res://BaseData/FPS/OutLineShader.gdshader" id="14_ri5ie"]
 [ext_resource type="PackedScene" uid="uid://cad2dv5kvx2jn" path="res://BaseData/NPC/fatih.tscn" id="15_om2u0"]
+[ext_resource type="Shader" path="res://BaseData/Shaders/retroShader.gdshader" id="15_ycrua"]
+[ext_resource type="Shader" path="res://BaseData/FPS/vhsShader.gdshader" id="16_y30ds"]
+[ext_resource type="PackedScene" uid="uid://0i060g1ou8k2" path="res://BaseData/Life/SecondOne.tscn" id="17_822mu"]
 
 [sub_resource type="Animation" id="Animation_aaum0"]
 resource_name = "loop"
@@ -42,19 +46,64 @@ _data = {
 panorama = ExtResource("13_74i1y")
 energy_multiplier = 0.1
 
-[sub_resource type="Sky" id="Sky_pyptm"]
+[sub_resource type="Sky" id="Sky_ri5ie"]
 sky_material = SubResource("PanoramaSkyMaterial_aaum0")
 
 [sub_resource type="Environment" id="Environment_x3jm3"]
 background_mode = 1
 background_energy_multiplier = 1.25
-sky = SubResource("Sky_pyptm")
+sky = SubResource("Sky_ri5ie")
 ambient_light_source = 2
 ambient_light_energy = 2.95
 tonemap_mode = 3
 ssil_enabled = true
 glow_enabled = true
 glow_bloom = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_822mu"]
+render_priority = 0
+shader = ExtResource("14_ri5ie")
+shader_parameter/shadow_color = Color(0, 0, 0, 1)
+shader_parameter/shadow_thickness = 1.8
+
+[sub_resource type="QuadMesh" id="QuadMesh_2ba3v"]
+size = Vector2(4, 3.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8qlib"]
+shader = ExtResource("15_ycrua")
+shader_parameter/color_bleed_enabled = true
+shader_parameter/chromatic_abberation_enabled = true
+shader_parameter/film_grain_enabled = true
+shader_parameter/sharpness_enabled = true
+shader_parameter/chromatic_abberation_seperation = 0.016
+shader_parameter/chromatic_abberation_intensity = 1.5
+shader_parameter/chromatic_abberation_blur_strength = 1.0
+shader_parameter/film_grain_intensity = 1.0
+shader_parameter/grain_size = 2.0
+shader_parameter/darkness_clamp = 0.28
+shader_parameter/sharpness_size = 1.0
+shader_parameter/sharpness_intensity = 0.7
+shader_parameter/color_bleed_seperation = 0.02
+shader_parameter/color_bleed_intensity = 0.2
+shader_parameter/anti_bleed_intensity = 1.8
+shader_parameter/color_bleed_blur_strength = 1.0
+shader_parameter/color_bleed_quality = 5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v62xt"]
+shader = ExtResource("16_y30ds")
+shader_parameter/vhs_resolution = Vector2(320, 240)
+shader_parameter/samples = 2
+shader_parameter/crease_noise = 1.0
+shader_parameter/crease_opacity = 0.5
+shader_parameter/filter_intensity = 0.1
+shader_parameter/tape_crease_smear = 0.2
+shader_parameter/tape_crease_intensity = 0.2
+shader_parameter/tape_crease_jitter = 0.1
+shader_parameter/tape_crease_speed = 0.5
+shader_parameter/tape_crease_discoloration = 1.0
+shader_parameter/bottom_border_thickness = 6.0
+shader_parameter/bottom_border_jitter = 6.0
+shader_parameter/noise_intensity = 0.1
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_om2u0"]
 transparency = 1
@@ -145,17 +194,45 @@ environment = SubResource("Environment_x3jm3")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="light"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8248, 0)
-light_energy = 0.17
+light_energy = 0.075
 omni_range = 14.0714
 
 [node name="OmniLight3D2" type="OmniLight3D" parent="light"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85244, -5.61444)
-light_energy = 0.17
+light_energy = 1.645
 omni_range = 14.0714
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.966823, 0, -0.255446, 0, 1, 0, 0.255446, 0, -0.966823, -0.411, 1.307, -3.418)
 fov = 90.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.938011)
+material_override = SubResource("ShaderMaterial_822mu")
+mesh = SubResource("QuadMesh_2ba3v")
+
+[node name="shader0" type="CanvasLayer" parent="Camera3D"]
+
+[node name="ColorRect" type="ColorRect" parent="Camera3D/shader0"]
+material = SubResource("ShaderMaterial_8qlib")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="shader1" type="CanvasLayer" parent="Camera3D"]
+layer = 2
+
+[node name="ColorRect" type="ColorRect" parent="Camera3D/shader1"]
+material = SubResource("ShaderMaterial_v62xt")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="InsideSound" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("14_h1k7f")
@@ -167,3 +244,6 @@ transform = Transform3D(-0.824788, 0, 0.565442, 0, 1, 0, -0.565442, 0, -0.824788
 transform = Transform3D(1.43003, 0, -5.96046e-08, 0, 3.68163, 0, 5.96046e-08, 0, 1.43003, -0.328635, 0.335, 1.21619)
 material_override = SubResource("StandardMaterial3D_om2u0")
 mesh = SubResource("QuadMesh_om2u0")
+
+[node name="secondONE" parent="." instance=ExtResource("17_822mu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.27755, 0.942874, -0.152939)

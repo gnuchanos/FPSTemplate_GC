@@ -52,6 +52,8 @@ func _process(delta: float) -> void:
 		if startEngine.global_position.y > 0.33140587806702:
 			startEngine.global_position.y -= 0.5 * delta
 			startEngine.global_position.z -= 0.04 * delta
-			print(startEngine.global_position.y)
 		else:
 			get_tree().change_scene_to_file("res://BaseData/Scenes/CardisHUB_TALK.tscn")
+
+	elif Input.is_action_just_pressed("giveLife"):
+		get_tree().change_scene_to_file("res://BaseData/Scenes/LifeCheck.tscn")

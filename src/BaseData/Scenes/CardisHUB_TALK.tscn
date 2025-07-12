@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dygn2bse4fvps"]
+[gd_scene load_steps=21 format=3 uid="uid://dygn2bse4fvps"]
 
 [ext_resource type="Script" path="res://BaseData/Scripts/CardisHUB.gd" id="1_jqlqs"]
 [ext_resource type="PackedScene" uid="uid://dlbm17bymbnjn" path="res://BaseData/3D/Cardis/Cardis.glb" id="2_mctuh"]
@@ -14,7 +14,9 @@
 [ext_resource type="PackedScene" uid="uid://13hyuesmqvad" path="res://BaseData/3D/CardisExtra/startEngineObject.glb" id="12_s6kp3"]
 [ext_resource type="PackedScene" uid="uid://c5gmvarioms50" path="res://BaseData/FPS/FPS.tscn" id="14_mctuh"]
 [ext_resource type="AudioStream" uid="uid://brwqo4ms71k0i" path="res://BaseData/Sound/InSoundW13.ogg" id="15_xjgi3"]
+[ext_resource type="Script" path="res://BaseData/Scripts/talk_area.gd" id="16_ihuba"]
 [ext_resource type="PackedScene" uid="uid://gbht0cncocdt" path="res://BaseData/3D/CardisExtra/Cardis_portable.glb" id="16_u3iad"]
+[ext_resource type="PackedScene" uid="uid://0i060g1ou8k2" path="res://BaseData/Life/SecondOne.tscn" id="16_ymjkt"]
 
 [sub_resource type="Animation" id="Animation_aaum0"]
 resource_name = "loop"
@@ -45,7 +47,9 @@ ambient_light_source = 3
 tonemap_mode = 3
 ssil_enabled = true
 glow_enabled = true
-glow_bloom = 0.5
+glow_intensity = 4.3
+glow_strength = 0.45
+glow_bloom = 1.0
 
 [node name="CardisHUB" type="Node3D"]
 script = ExtResource("1_jqlqs")
@@ -148,3 +152,13 @@ transform = Transform3D(-5.96046e-08, 0, 1, 0, 1, 0, -1, 0, -5.96046e-08, 8.0845
 
 [node name="Cardis_portable" parent="." instance=ExtResource("16_u3iad")]
 transform = Transform3D(-1.08112, 0, -8.74228e-08, 0, 1.05838, 0, 9.45147e-08, 0, -1, -0.000824869, -0.31965, -10.2988)
+
+[node name="talkArea" type="Node3D" parent="."]
+script = ExtResource("16_ihuba")
+
+[node name="firstONE" parent="talkArea" instance=ExtResource("16_ymjkt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.79205, 0.942861, -0.0279791)
+
+[node name="talkFirstOne" type="AudioStreamPlayer3D" parent="talkArea/firstONE"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.285286, 1.06269, 0)
+bus = &"Voice"
