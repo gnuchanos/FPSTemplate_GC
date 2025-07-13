@@ -22,6 +22,7 @@ var timer = randf_range(1, 5)
 
 func _ready() -> void:
 	$Cardis/centerObject/CenterAnim.play("loop")
+	GlobalVAR.PlayerCanJump = false
 
 func _process(delta: float) -> void:
 	if timer > 0:
